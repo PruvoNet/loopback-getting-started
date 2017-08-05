@@ -1,0 +1,14 @@
+<section>
+  <article ng-repeat="r in notes.slice().reverse()">
+    <header>
+      <h1>{{r.created | date}} | {{r.title}}</h1>
+    </header>
+
+    <p>{{r.content}}</p>
+
+    <div class="actions" ng-show="currentUser">
+      <button ui-sref="edit-note({ id: r.id })">Edit</button>
+      <button a ui-sref="archive-note({ id: r.id })">Archive</button>
+    </div>
+  </article>
+</section>

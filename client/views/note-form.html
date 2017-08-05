@@ -1,0 +1,22 @@
+<section>
+  <form name="form" ng-submit="submitForm()">
+    <fieldset>
+      <legend>{{action}} note form</legend>
+
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" ng-model="note.title"/>
+      </div>
+
+      <div class="form-group">
+        <label>Content</label>
+        <textarea ng-model="note.content"></textarea>
+      </div>
+
+      <div class="actions">
+        <label></label>
+        <button>{{action}} note</button>
+      </div>
+    </fieldset>
+  </form>
+  <section>

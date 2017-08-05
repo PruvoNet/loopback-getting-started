@@ -1,0 +1,10 @@
+<section>
+  <article ng-repeat="r in notes.slice().reverse()">
+    <header>
+      <h1>{{r.created | date}} | {{r.title}}</h1>
+    </header>
+
+    <p>{{r.content}}</p>
+
+  </article>
+</section>

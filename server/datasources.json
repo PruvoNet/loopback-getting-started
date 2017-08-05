@@ -1,0 +1,15 @@
+{
+  "db": {
+    "host": "testmyapp.database.windows.net",
+    "port": 1433,
+    "url": "",
+    "database": "testMyApp",
+    "password": "Admin1234",
+    "name": "db",
+    "user": "myapp",
+    "connector": "mssql",
+    "options": {
+      "encrypt": true
+    }
+  }
+}
