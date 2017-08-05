@@ -374,5 +374,67 @@ $ lb relation
 ? Require a through model? No
 ```
 
+Check out the models json files and notice the added relations section.
+
 Open the explore and notice that new resources were added to note and user that describe the relations. For example, a user can directly ask for all of his notes by the `\users\:id\notes` endpoint
+
+### 9. Define ACLs
+
+Our users privacy is very important to us. As such, we don't want to expose a users notes to other users.
+Loopback comes with build in ACL mechanism to control who can access what resource.
+
+Lets define the following ACLs:
+ - disable access to all models
+ - allow users to write notes
+ - allow notes to be editable by their owner only
+ - allow notes to be archived by their owner only
+ - allow users to get their own user data
+
+```sh
+$ lb acl
+? Select the model to apply the ACL entry to: (all existing models)
+? Select the ACL scope: All methods and properties
+? Select the access type: All (match all types)
+? Select the role All users
+? Select the permission to apply Explicitly deny access
+```
+
+```sh
+$ lb acl
+? Select the model to apply the ACL entry to: user
+? Select the ACL scope: A single method
+? Enter the method name __create__notes
+? Select the role The user owning the object
+? Select the permission to apply Explicitly grant access
+```
+
+```sh
+$ lb acl
+? Select the model to apply the ACL entry to: note
+? Select the ACL scope: All methods and properties
+? Select the access type: Write
+? Select the role The user owning the object
+? Select the permission to apply Explicitly grant access
+```
+
+```sh
+$ lb acl
+? Select the model to apply the ACL entry to: note
+? Select the ACL scope: A single method
+? Enter the method name archive
+? Select the role The user owning the object
+? Select the permission to apply Explicitly grant access
+```
+
+```sh
+$ lb acl
+? Select the model to apply the ACL entry to: user
+? Select the ACL scope: All methods and properties
+? Select the access type: Read
+? Select the role The user owning the object
+? Select the permission to apply Explicitly grant access
+```
+
+Check out the models json files and notice the added acls section.
+
 
