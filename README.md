@@ -66,10 +66,12 @@ Connecting a real DB is as easy as a cli command.
 
 > You can skip this step for now if you don't have a test DB set up
 
+First lets remove the in-memory db defintion from `server/datasources.js`
+
 For the purpose of this tutorial, we will connect a MSSQL DB:
 ```sh
 $ lb datasource
-? Enter the datasource name: sql
+? Enter the datasource name: db
 ? Select the connector for sql: Microsoft SQL (supported by StrongLoop)
 ? Connection String url to override other settings (eg: mssql://username:password@localhost/database):
 ? host: testmyapp.database.windows.net
@@ -80,7 +82,7 @@ $ lb datasource
 ? Install loopback-connector-mssql@^2.5 Yes
 ```
 
-Notice that the `server/datasources.json` file has a new "sql" object that describes the DB conneciton we just set up.
+Notice that the `server/datasources.json` file has a new "db" object that describes the DB conneciton we just set up.
 
 Since MSSQL requires an encrypted connection, we need to declare it in the mathcing object by adding 
 ```json
@@ -142,7 +144,7 @@ Lets jump right ahead and create the model:
 ```sh
 $ lb model
 ? Enter the model name: note
-? Select the datasource to attach note to: sql (mssql)
+? Select the datasource to attach note to: db (mssql)
 ? Select model's base class PersistedModel
 ? Expose note via the REST API? Yes
 ? Custom plural form (used to build REST URL):
@@ -229,8 +231,6 @@ We want that the `created` field of our model to be auto generated with the curr
 
 Notice also that the `server/model-config.js` file declares our model and connects it to the DB we created earlier.
 
-Lets connect the pre defined models in that file to our DB as well by changing the "dataSource" property to "sql".
-
 Restart the server and open the explorer. You will now see the notes model there. You can play around with it by adding, editing and deleting notes. All of the changes you will make will be persisted to the newly created table in the DB.
 
 ### 6. Add archive method to the Note model
@@ -274,7 +274,7 @@ For purposes outside of the scope of this tutrial, we need to extend them.
 ```sh
 $ lb model
 ? Enter the model name: user
-? Select the datasource to attach user to: sql (mssql)
+? Select the datasource to attach user to: db (mssql)
 ? Select model's base class User
 ? Expose user via the REST API? Yes
 ? Custom plural form (used to build REST URL):
@@ -292,7 +292,7 @@ Enter an empty property name when done.
 ```sh
 $ lb model
 ? Enter the model name: accessToken
-? Select the datasource to attach accessToken to: sql (mssql)
+? Select the datasource to attach accessToken to: db (mssql)
 ? Select model's base class AccessToken
 ? Expose accessToken via the REST API? No
 ? Common model or server only? server
@@ -571,7 +571,7 @@ Define the passport required models:
 ```sh
 $ lb model
 ? Enter the model name: userIdentity
-? Select the datasource to attach userIdentity to: sql (mssql)
+? Select the datasource to attach userIdentity to: db (mssql)
 ? Select model's base class (custom)
 ? Enter the base model name: UserIdentity
 ? Expose userIdentity via the REST API? No
@@ -581,7 +581,7 @@ $ lb model
 ```sh
 $ lb model
 ? Enter the model name: userCredential
-? Select the datasource to attach userCredential to: sql (mssql)
+? Select the datasource to attach userCredential to: db (mssql)
 ? Select model's base class (custom)
 ? Enter the base model name: UserCredential
 ? Expose userCredential via the REST API? No
