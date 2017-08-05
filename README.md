@@ -260,7 +260,7 @@ We want the `username` field of our model to be indexed, as it will be used to f
   {
     "columns": "username"
   }
-},
+}
 ```
 
 Notice also that the `server/model-config.js` file declares our model and connects it to the DB we created earlier.
