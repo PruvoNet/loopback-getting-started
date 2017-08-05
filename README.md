@@ -498,5 +498,93 @@ Example usage for creating a note for a user:
 
 Refresh the site and playaround in it (first you need to signup)
 
+### 12. Login using Facebook
 
+Users prefer to have a quick singup/login process. We can achieve that by allowing users to signup using Facebook
 
+Loopback comes with full support of the Passport node modules.
+
+> You will need to setup a facebook app and obtain the app id and secret. Also enable http://localhost:3000 as a valid url to use the app.
+
+First lets install the required dependencies:
+```sh
+$ npm install --save loopback-component-passport
+$ npm install --save passport-facebook
+$ npm install --save cookie-parser
+```
+
+Now lets add to the `server/server.js` file, after the setting the `variable` the following:
+```javascript
+require('loopback-component-passport');
+var cookieParser = require('cookie-parser');
+app.middleware('session:before', cookieParser('cookieSecret'));
+```
+
+Add `server/boot/providers.json` file that declares the facebook login method:
+```javascript
+{
+  "facebook-login": {
+    "provider": "facebook",
+    "module": "passport-facebook",
+    "setAccessToken": true,
+    "clientID": "109015129773445",
+    "clientSecret": "88a9a4273dd717769eb926ab7626fd38",
+    "callbackURL": "http://localhost:3000/api/auth/facebook/callback",
+    "authPath": "/api/auth/facebook",
+    "callbackPath": "/api/auth/facebook/callback",
+    "successRedirect": "/#/my-notes",
+    "failureRedirect": "/login",
+    "scope": [
+      "email"
+    ]
+  }
+}
+```
+
+Add `server/boot/passport.js`  file that sets up the passport extension:
+```javascript
+'use strict';
+
+module.exports = function (app) {
+
+  var loopbackPassport = require('loopback-component-passport');
+  var PassportConfigurator = loopbackPassport.PassportConfigurator;
+  var passportConfigurator = new PassportConfigurator(app);
+  passportConfigurator.init();
+  var providers = require('./providers.json');
+  passportConfigurator.setupModels({
+    userModel: app.models.user,
+    userIdentityModel: app.models.userIdentity,
+    userCredentialModel: app.models.userCredential
+  });
+  for (var s in providers) {
+    var c = providers[s];
+    c.session = c.session !== false;
+    passportConfigurator.configureProvider(s, c);
+  }
+
+};
+```
+
+Define the passport required models:
+```sh
+$ lb model
+? Enter the model name: userIdentity
+? Select the datasource to attach userIdentity to: sql (mssql)
+? Select model's base class (custom)
+? Enter the base model name: UserIdentity
+? Expose userIdentity via the REST API? No
+? Common model or server only? server
+```
+
+```sh
+$ lb model
+? Enter the model name: userCredential
+? Select the datasource to attach userCredential to: sql (mssql)
+? Select model's base class (custom)
+? Enter the base model name: UserCredential
+? Expose userCredential via the REST API? No
+? Common model or server only? server
+```
+
+restart the server and try to login with facebook
