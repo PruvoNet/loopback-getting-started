@@ -330,6 +330,20 @@ Edit the `server/models/access-token.json` file by changing the `id` property to
 }
 ```
 
+Change the authentication process by setting the `server/boot/authentication.js` file to be:
+```javascript
+'use strict';
+var loopback = require('loopback');
+module.exports = function enableAuthentication(app) {
+  // enable authentication
+  app.enableAuth();
+  app.middleware('auth', loopback.token({
+    model: app.models.accessToken,
+    currentUserLiteral: 'me'
+  }));
+};
+```
+
 ### 8. Define relations
 
 Now that we have the user and note models, we need to define the relations between them:
@@ -456,7 +470,33 @@ Edit the `files` property of the `server/middleware.json` file:
 
 Now copy the sample angular client from thi repo to the client directoy in your project.
 
+Restart the server and open http://localhost:3000
+You will see the site but it is not responsive. The reason is that we need to setup the communication between the UI and the API we have set.
+
 ### 11. Interactions between the forntend and the backend
+
+Loopback comes with a cli tool that auto generates $resource for all your application REST endpoint, allowing to easily interact with your api from angular web applications.
+
+Lets generate the js code by running:
+```sh
+$ lb-ng server/server.js client/js/services/lb-services.js
+```
+
+You can checkout the ```client/js/services/lb-services.js``` generated file and see the mappings of all our API endpoints.
+
+Now our controllers can Inject the Note and User moduls and interact with them with native functionality without the need to define the resources outselves.
+
+Example usage for creating a note for a user:
+```javascript
+ User.notes
+          .create({id: 'me'}, {
+            username: $rootScope.currentUser.email,
+            title: $scope.note.title,
+            content: $scope.note.content
+          })
+```
+
+Refresh the site and playaround in it (first you need to signup)
 
 
 
