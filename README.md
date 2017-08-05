@@ -15,16 +15,20 @@ This tutrial will cover:
 Table of contents
 =================
 
-  * [gh-md-toc](#gh-md-toc)
-  * [Table of contents](#table-of-contents)
-  * [Installation](#installation)
-  * [Usage](#usage)
-    * [STDIN](#stdin)
-    * [Local files](#local-files)
-    * [Remote files](#remote-files)
-    * [Multiple files](#multiple-files)
-    * [Combo](#combo)
-  * [Tests](#tests)
+  * [Set up](#set-up)
+  * [Goal](#goal)
+  * [Generate the application](#generate-the-application)
+  * [Attach a DB](#attach-a-db)
+  * [Auto create DB schema](#auto-create-db-schema)
+  * [Create models](#create-models)
+  * [Add archive method to the Note model](#add-archive-method-to-the-note-model)
+  * [Extned user models](#extned-user-models)
+  * [Define relations](#define-relations)
+  * [Define ACLs](#define-acls)
+  * [Add the frontend](#add-the-frontend)
+  * [Interactions between the forntend and the backend](#interactions-between-the-frontend-and-the-backend)
+  * [Login using Facebook](#login-using-facebook)
+  * [Summary](#summary)
   * [Credits](#credits)
  
 Set up
@@ -478,7 +482,7 @@ $ lb acl
 
 Check out the models json files and notice the added acls section.
 
-Add the fornetnd
+Add the frontend
 ================
 
 We have build our api server, and now is the time to add the UI part so the users can start enjoing our app.
@@ -501,7 +505,7 @@ Now copy the sample angular client from thi repo to the client directoy in your 
 Restart the server and open http://localhost:3000
 You will see the site but it is not responsive. The reason is that we need to setup the communication between the UI and the API we have set.
 
-Interactions between the forntend and the backend
+Interactions between the frontend and the backend
 =================================================
 
 Loopback comes with a cli tool that auto generates $resource for all your application REST endpoint, allowing to easily interact with your api from angular web applications.
