@@ -1,15 +1,16 @@
 # loopback-getting-started
 
-A simple tutorial for getting started with the Loopback framework
+A simple tutorial for getting started with the Loopback framework.
+
 This tutrial will cover:
 
-  - Setting up a working web applicaiton with fornend and backend
+  - Setting up a working web applicaiton with frontend and backend
   - Set up models for the web application
   - Defining the models relations and ACLs
   - Authentication and Authrization features
   - 3rd party login support
   - Connecting the models to a real DB
-  - Angular frotnend that communicate with the backend server
+  - Angular frotnend that communicates with the backend server
 
 ### Set up
 
@@ -22,12 +23,12 @@ Install the follwoing loopback dependencies
 
 ```sh
 $ npm install -g loopback-cli
-$ nnpm install -g strongloop
-$ install -g loopback-sdk-angular-cli
+$ npm install -g strongloop
+$ npm install -g loopback-sdk-angular-cli
 ```
 
 ### 1. Goal
-We will create a simple web application (MyNotes) that will enable users to create and manage personal notes with the abaility to archive them once they are irelevant.
+We will create a simple web application (MyNotes) that will enable users to create and manage personal notes with the abaility to archive them once they are irrelevant.
 
 ### 2. Generate the application
 
@@ -41,12 +42,12 @@ $ lb
 $ node server/server.js
 ```
 
-Now we have a working server. You can explore the main page by opening http://localhost:3000/
-Loopback comes with a builtin User model for handling users.
-All models in loopback comes with a full REST representation out of the box.
+Now we have a working server. You can explore the main page by opening http://localhost:3000/  
+Loopback comes with a builtin User model for handling users.  
+All models in loopback comes with a full REST representation out of the box.  
 You can explore and interact with your models at any time by opening the Swagger explorer at http://localhost:3000/explorer
 
-Try and create a user by using the POSTthod on the /Users endpoint and giving the following object:
+Try and create a user by using the POST method on the /Users endpoint and giving the following object:
 ```json
 {
     "email": "your@email.com",
@@ -55,17 +56,17 @@ Try and create a user by using the POSTthod on the /Users endpoint and giving th
 ```
 Notice that we got a valid response from the server stating the user was created.
 
-Lets try to get all the users we have by running the GET method on the /Users endpoint.
-Notice we got a 401 error code - which makes sense, as users data is sensative and and such no once can read it without the proper access - we will disucess ACLs later on.
+Lets try to get all the users we have by running the GET method on the /Users endpoint.  
+Notice we got a 401 error code - which makes sense, as users data is sensetive and and such no one can read it without the proper access - we will discuss ACLs later on.
 
-### 3. Attach DB
+### 3. Attach a DB
 
-Loopback comes with a in-memory DB for devloping purpuses which makes it easier to start working right away.
+Loopback comes with an in-memory DB for developing purposes which makes it easier to start working right away.  
 Connecting a real DB is as easy as a cli command.
 
 > You can skip this step for now if you don't have a test DB set up
 
-For the purposed of this tutrial I will connect a MSSQL DB:
+For the purpose of this tutorial, we will connect a MSSQL DB:
 ```sh
 $ lb datasource
 ? Enter the datasource name: sql
@@ -588,3 +589,11 @@ $ lb model
 ```
 
 restart the server and try to login with facebook
+
+### 13. Summary
+
+You are not welcome to extend the application by adding more models and expiremnting with changes in the UI to interact with those models.
+
+Adding Gmail login is as easy as adding another part to the `providers.json` file.
+
+
