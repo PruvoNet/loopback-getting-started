@@ -22,11 +22,11 @@ Table of contents
   * [Auto create DB schema](#auto-create-db-schema)
   * [Create models](#create-models)
   * [Add archive method to the Note model](#add-archive-method-to-the-note-model)
-  * [Extned user models](#extned-user-models)
+  * [Extend user models](#extend-user-models)
   * [Define relations](#define-relations)
   * [Define ACLs](#define-acls)
   * [Add the frontend](#add-the-frontend)
-  * [Interactions between the forntend and the backend](#interactions-between-the-frontend-and-the-backend)
+  * [Interactions between the frontend and the backend](#interactions-between-the-frontend-and-the-backend)
   * [Login using Facebook](#login-using-facebook)
   * [Summary](#summary)
   * [Credits](#credits)
@@ -293,7 +293,7 @@ We added a method called `archive` to the Note model, which operats on a specifi
 
 Open the explorer and notice the `archive` method. Try it out on one of your already created notes
 
-Extned user models
+Extend user models
 ==================
 
 As mentioned before, loopback comes with predefined models for handling users and authentication.
