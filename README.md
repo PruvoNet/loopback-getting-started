@@ -12,7 +12,23 @@ This tutrial will cover:
   - Connecting the models to a real DB
   - Angular frotnend that communicates with the backend server
 
-### Set up
+Table of contents
+=================
+
+  * [gh-md-toc](#gh-md-toc)
+  * [Table of contents](#table-of-contents)
+  * [Installation](#installation)
+  * [Usage](#usage)
+    * [STDIN](#stdin)
+    * [Local files](#local-files)
+    * [Remote files](#remote-files)
+    * [Multiple files](#multiple-files)
+    * [Combo](#combo)
+  * [Tests](#tests)
+  * [Credits](#credits)
+ 
+Set up
+======
 
 Please make sure you have the following:
   - [Node.js](https://nodejs.org/)
@@ -27,10 +43,13 @@ $ npm install -g strongloop
 $ npm install -g loopback-sdk-angular-cli
 ```
 
-### 1. Goal
+Goal
+====
+
 We will create a simple web application (MyNotes) that will enable users to create and manage personal notes with the abaility to archive them once they are irrelevant.
 
-### 2. Generate the application
+Generate the application
+========================
 
 ```sh
 $ mkdir MyNotes
@@ -59,7 +78,8 @@ Notice that we got a valid response from the server stating the user was created
 Lets try to get all the users we have by running the GET method on the /Users endpoint.  
 Notice we got a 401 error code - which makes sense, as users data is sensetive and and such no one can read it without the proper access - we will discuss ACLs later on.
 
-### 3. Attach a DB
+Attach a DB
+===========
 
 Loopback comes with an in-memory DB for developing purposes which makes it easier to start working right away.  
 Connecting a real DB is as easy as a cli command.
@@ -92,7 +112,8 @@ Since MSSQL requires an encrypted connection, we need to declare it in the mathc
 }
 ```
 
-### 4. Auto create DB schema
+Auto create DB schema
+=====================
 
 Loopback can auto create all the schemas that describe our models. This is very convenient for developing since we don't want to create the schemas ourselves.
 
@@ -132,7 +153,8 @@ module.exports = function (app) {
 Rerun the application and create a user again (it was deleted from last time as it was saved in memory)  
 Open your prefrence of DB explorer and notice that a lof of tables were auto created for you and that the user table has 1 entry of the user you just created.
 
-### 5. Create models
+Create models
+=============
 
 As our application holds notes for users, we need to have a representation of a note in the DB:
  - A note will belong to a single user
@@ -233,7 +255,8 @@ Notice also that the `server/model-config.js` file declares our model and connec
 
 Restart the server and open the explorer. You will now see the notes model there. You can play around with it by adding, editing and deleting notes. All of the changes you will make will be persisted to the newly created table in the DB.
 
-### 6. Add archive method to the Note model
+Add archive method to the Note model
+====================================
 
 We want users to be able to archive their notes. We can do that by adding custom methods to the model.
 
@@ -266,7 +289,8 @@ We added a method called `archive` to the Note model, which operats on a specifi
 
 Open the explorer and notice the `archive` method. Try it out on one of your already created notes
 
-### 7. Extned user models
+Extned user models
+==================
 
 As mentioned before, loopback comes with predefined models for handling users and authentication.
 For purposes outside of the scope of this tutrial, we need to extend them.
@@ -345,7 +369,8 @@ module.exports = function enableAuthentication(app) {
 };
 ```
 
-### 8. Define relations
+Define relations
+================
 
 Now that we have the user and note models, we need to define the relations between them:
  - a user had many notes
@@ -393,7 +418,8 @@ Check out the models json files and notice the added relations section.
 
 Open the explore and notice that new resources were added to note and user that describe the relations. For example, a user can directly ask for all of his notes by the `\users\:id\notes` endpoint
 
-### 9. Define ACLs
+Define ACLs
+===========
 
 Our users privacy is very important to us. As such, we don't want to expose a users notes to other users.
 Loopback comes with build in ACL mechanism to control who can access what resource.
@@ -452,7 +478,8 @@ $ lb acl
 
 Check out the models json files and notice the added acls section.
 
-### 10. Add the fornetnd
+Add the fornetnd
+================
 
 We have build our api server, and now is the time to add the UI part so the users can start enjoing our app.
 
@@ -474,7 +501,8 @@ Now copy the sample angular client from thi repo to the client directoy in your 
 Restart the server and open http://localhost:3000
 You will see the site but it is not responsive. The reason is that we need to setup the communication between the UI and the API we have set.
 
-### 11. Interactions between the forntend and the backend
+Interactions between the forntend and the backend
+=================================================
 
 Loopback comes with a cli tool that auto generates $resource for all your application REST endpoint, allowing to easily interact with your api from angular web applications.
 
@@ -499,7 +527,8 @@ Example usage for creating a note for a user:
 
 Refresh the site and playaround in it (first you need to signup)
 
-### 12. Login using Facebook
+Login using Facebook
+====================
 
 Users prefer to have a quick singup/login process. We can achieve that by allowing users to signup using Facebook
 
@@ -590,12 +619,14 @@ $ lb model
 
 restart the server and try to login with facebook
 
-### 13. Summary
+Summary
+=======
 
 You are not welcome to extend the application by adding more models and expiremnting with changes in the UI to interact with those models.
 
 Adding Gmail login is as easy as adding another part to the `providers.json` file.
 
-### 14. Credits
+Credits
+=======
 
 This tutorial is based on the https://loopback.io/doc/en/lb3/Getting-started-with-LoopBack.html official tutorial by Loopback
