@@ -204,11 +204,68 @@ Notice that under `server/models` we have 2 files that represnt the Note model:
  - `note.js` - here we can customize the behaviour of the model
  - `note.json` - JSON description of the model
 
-Notice also that the `server/model-config.js` file declares our model and connects it to the DB we created earlier
+We want that the `id` field of our model to be the PK and make it auto generated with UUID value. To do that, edit the `server/models/note.json` file by changing the `id` property to be as follows:
+```json
+"id": 
+{
+    "type": "string",
+    "required": true,
+    "id": true,
+    "generated": false,
+    "defaultFn": "uuidv4"
+}
+```
 
-Lets connect the pre defined models in that file to our DB as well by changing the "dataSource" property to "sql"
+We want that the `created` field of our model to be auto generated with the current timestamp. To do that, edit the `server/models/note.json` file by changing the `created` property to be as follows:
+```json
+"created": 
+{
+    "type": "date",
+    "required": true,
+    "defaultFn": "now"
+}
+```
 
-### 6. Extned user models
+Notice also that the `server/model-config.js` file declares our model and connects it to the DB we created earlier.
+
+Lets connect the pre defined models in that file to our DB as well by changing the "dataSource" property to "sql".
+
+Restart the server and open the explorer. You will now see the notes model there. You can play around with it by adding, editing and deleting notes. All of the changes you will make will be persisted to the newly created table in the DB.
+
+### 6. Add archive method to the Note model
+
+We want users to be able to archive their notes. We can do that by adding custom methods to the model.
+
+Please add the following to the exports function in `server/models/note.js`:
+```javascript
+  Note.prototype.archive = function (cb) {
+    var note = this;
+    console.log('archving note', note.id);
+    var delta = {archived: true};
+    note.patchAttributes(delta)
+      .then(function () {
+        return cb();
+      })
+      .catch(function (err) {
+        var errToSend = new Error();
+        errToSend.status = 500;
+        errToSend.message = 'Failed archiving note';
+        return cb(errToSend);
+      });
+  };
+  Note.remoteMethod(
+    'archive',
+    {isStatic: false}
+  );
+```
+
+We added a method called `archive` to the Note model, which operats on a specific instance of it. When the archive method is called on a note, it will change its `archived` property to true.
+
+> we can achieve the change of property by using the PATCH method on the Note model directly, but for the sake of this tutrial, we added a custom method for it
+
+Open the explorer and notice the `archive` method. Try it out on one of your already created notes
+
+### 7. Extned user models
 
 As mentioned before, loopback comes with predefined models for handling users and authentication.
 For purposes outside of the scope of this tutrial, we need to extend them.
@@ -250,5 +307,72 @@ Enter an empty property name when done.
 
 Now lets remove the old model configs from `server/model-config.js` by removing the "User" and "AccessToken" keys
 
+Edit the `server/models/user.json` file by changing the `email` property to be as follow:
+```json
+"email": 
+{
+    "type": "string",
+    "required": true,
+    "id": true,
+    "generated": false
+}
+```
 
+Edit the `server/models/access-token.json` file by changing the `id` property to be as follow:
+```json
+"id":
+{
+    "type": "string",
+    "required": true,
+    "id": true,
+    "generated": false,
+    "defaultFn": "uuidv4"
+}
+```
+
+### 8. Define relations
+
+Now that we have the user and note models, we need to define the relations between them:
+ - a user had many notes
+ - a note belongs to one user
+
+```sh
+$ lb relation
+? Select the model to create the relationship from: user
+? Relation type: has many
+? Choose a model to create a relationship with: note
+? Enter the property name for the relation: notes
+? Optionally enter a custom foreign key:
+? Require a through model? No
+```
+
+```sh
+$ lb relation
+? Select the model to create the relationship from: note
+? Relation type: belongs to
+? Choose a model to create a relationship with: user
+? Enter the property name for the relation: user
+? Optionally enter a custom foreign key:
+```
+
+```sh
+$ lb relation
+? Select the model to create the relationship from: accessToken
+? Relation type: belongs to
+? Choose a model to create a relationship with: user
+? Enter the property name for the relation: user
+? Optionally enter a custom foreign key:
+```
+
+```sh
+$ lb relation
+? Select the model to create the relationship from: user
+? Relation type: has many
+? Choose a model to create a relationship with: accessToken
+? Enter the property name for the relation: accessTokens
+? Optionally enter a custom foreign key:
+? Require a through model? No
+```
+
+Open the explore and notice that new resources were added to note and user that describe the relations. For example, a user can directly ask for all of his notes by the `\users\:id\notes` endpoint
 
