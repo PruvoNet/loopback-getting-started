@@ -254,6 +254,17 @@ We want that the `created` field of our model to be auto generated with the curr
 }
 ```
 
+We want the `username` field of our model to be indexed, as it will be used to find notes of a user. To do that, edit the `server/models/note.json` file by add the `indexes` property as follows:
+```json
+"indexes":
+{
+  "username": 
+  {
+    "columns": "username"
+  }
+},
+```
+
 Notice also that the `server/model-config.js` file declares our model and connects it to the DB we created earlier.
 
 Restart the server and open the explorer. You will now see the notes model there. You can play around with it by adding, editing and deleting notes. All of the changes you will make will be persisted to the newly created table in the DB.
