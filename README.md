@@ -10,7 +10,7 @@ This tutrial will cover:
   - Authentication and Authrization features
   - 3rd party login support
   - Connecting the models to a real DB
-  - Angular frotnend that communicates with the backend server
+  - Angular frontend that communicates with the backend server
 
 Goal
 ====
@@ -23,7 +23,7 @@ Table of contents
   * [Set up](#set-up)
   * [Generate the application](#generate-the-application)
   * [Attach a DB](#attach-a-db)
-  * [Auto create DB schema](#auto-create-db-schema)
+  * [Auto create DB schemas](#auto-create-db-schemas)
   * [Create models](#create-models)
   * [Add archive method to the Note model](#add-archive-method-to-the-note-model)
   * [Extend user models](#extend-user-models)
@@ -41,9 +41,7 @@ Set up
 Please make sure you have the following:
   - [Node.js](https://nodejs.org/)
   - [NPM](https://www.npmjs.com/)
-  - loopback global npm libraries
-
-Install the follwoing loopback dependencies
+  - loopback global npm libraries:
 
 ```sh
 $ npm install -g loopback-cli
@@ -65,21 +63,21 @@ $ node server/server.js
 ```
 
 Now we have a working server. You can explore the main page by opening http://localhost:3000/  
-Loopback comes with a builtin User model for handling users.  
 All models in loopback comes with a full REST representation out of the box.  
 You can explore and interact with your models at any time by opening the Swagger explorer at http://localhost:3000/explorer
 
-Try and create a user by using the POST method on the /Users endpoint and giving the following object:
+Loopback comes with a builtin User model for handling users.  
+Try and create a user by using the POST method on the /Users endpoint and giving the following user object:
 ```json
 {
     "email": "your@email.com",
     "password": "12345"
 }
 ```
-Notice that we got a valid response from the server stating the user was created.
+Notice that we got a valid response from the server, stating the user was created.
 
 Lets try to get all the users we have by running the GET method on the /Users endpoint.  
-Notice we got a 401 error code - which makes sense, as users data is sensetive and and such no one can read it without the proper access - we will discuss ACLs later on.
+Notice we got a 401 error code - which makes sense, as users data is sensetive and as such no one can read it without the proper access - we will discuss ACLs later on.
 
 Attach a DB
 ===========
@@ -87,7 +85,7 @@ Attach a DB
 Loopback comes with an in-memory DB for developing purposes which makes it easier to start working right away.  
 Connecting a real DB is as easy as a cli command.
 
-> You can skip this step for now if you don't have a test DB set up
+> You can skip this step if you don't have a test DB set up
 
 First lets remove the in-memory db defintion from `server/datasources.js`
 
@@ -105,9 +103,9 @@ $ lb datasource
 ? Install loopback-connector-mssql@^2.5 Yes
 ```
 
-Notice that the `server/datasources.json` file has a new "db" object that describes the DB conneciton we just set up.
+Notice that the `server/datasources.json` file has a new "db" object that describes the DB connection we just set up.
 
-Since MSSQL requires an encrypted connection, we need to declare it in the mathcing object by adding the following to its definition:
+Since MSSQL requires an encrypted connection, we need to declare it in the matching object by adding the following to its definition:
 ```json
 "options": 
 {
@@ -115,7 +113,7 @@ Since MSSQL requires an encrypted connection, we need to declare it in the mathc
 }
 ```
 
-Auto create DB schema
+Auto create DB schemas
 =====================
 
 Loopback can auto create all the schemas that describe our models. This is very convenient for developing since we don't want to create the schemas ourselves.
@@ -161,7 +159,7 @@ Create models
 
 As our application holds notes for users, we need to have a representation of a note in the DB:
  - A note will belong to a single user
- - A note can be archivable
+ - A note can be archived
  - A note will be composed of a title and text content.
  - A note will have a creation date
 
@@ -232,7 +230,7 @@ Notice that under `server/models` we have 2 files that represnt the Note model:
  - `note.js` - here we can customize the behaviour of the model
  - `note.json` - JSON description of the model
 
-We want that the `id` field of our model to be the PK and make it auto generated with UUID value. To do that, edit the `server/models/note.json` file by changing the `id` property to be as follows:
+We want the `id` field of our model to be the PK and make it auto generated with UUID value. To do that, edit the `server/models/note.json` file by changing the `id` property to be as follows:
 ```json
 "id": 
 {
@@ -244,7 +242,7 @@ We want that the `id` field of our model to be the PK and make it auto generated
 }
 ```
 
-We want that the `created` field of our model to be auto generated with the current timestamp. To do that, edit the `server/models/note.json` file by changing the `created` property to be as follows:
+We want the `created` field of our model to be auto generated with the current timestamp. To do that, edit the `server/models/note.json` file by changing the `created` property to be as follows:
 ```json
 "created": 
 {
@@ -272,7 +270,7 @@ Restart the server and open the explorer. You will now see the notes model there
 Add archive method to the Note model
 ====================================
 
-We want users to be able to archive their notes. We can do that by adding custom methods to the model.
+We want users to be able to archive their notes. We can do that by adding a custom method to the model.
 
 Please add the following to the exports function in `server/models/note.js`:
 ```javascript
@@ -299,7 +297,7 @@ Please add the following to the exports function in `server/models/note.js`:
 
 We added a method called `archive` to the Note model, which operats on a specific instance of it. When the archive method is called on a note, it will change its `archived` property to true.
 
-> we can achieve the change of property by using the PATCH method on the Note model directly, but for the sake of this tutrial, we added a custom method for it
+> we can achieve the change of the property by using the PATCH method on the Note model directly, but for the sake of this tutorial, we added a custom method for it
 
 Open the explorer and notice the `archive` method. Try it out on one of your already created notes
 
@@ -346,7 +344,7 @@ Enter an empty property name when done.
 
 Now lets remove the old model configs from `server/model-config.js` by removing the "User" and "AccessToken" keys
 
-Edit the `server/models/user.json` file by changing the `email` property to be as follow:
+Edit the `server/models/user.json` file by changing the `email` property to be as follows:
 ```json
 "email": 
 {
@@ -357,7 +355,7 @@ Edit the `server/models/user.json` file by changing the `email` property to be a
 }
 ```
 
-Edit the `server/models/access-token.json` file by changing the `id` property to be as follow:
+Edit the `server/models/access-token.json` file by changing the `id` property to be as follows:
 ```json
 "id":
 {
@@ -374,7 +372,6 @@ Change the authentication process by setting the `server/boot/authentication.js`
 'use strict';
 var loopback = require('loopback');
 module.exports = function enableAuthentication(app) {
-  // enable authentication
   app.enableAuth();
   app.middleware('auth', loopback.token({
     model: app.models.accessToken,
@@ -387,7 +384,7 @@ Define relations
 ================
 
 Now that we have the user and note models, we need to define the relations between them:
- - a user had many notes
+ - a user has many notes
  - a note belongs to one user
 
 ```sh
@@ -430,7 +427,7 @@ $ lb relation
 
 Check out the models json files and notice the added relations section.
 
-Open the explore and notice that new resources were added to note and user that describe the relations. For example, a user can directly ask for all of his notes by the `\users\:id\notes` endpoint
+Open the explorer and notice that new resources were added to the note and user models, that describe the relations. For example, a user can directly ask for all of his notes by the `\users\:id\notes` endpoint
 
 Define ACLs
 ===========
@@ -495,11 +492,12 @@ Check out the models json files and notice the added acls section.
 Add the frontend
 ================
 
-We have build our api server, and now is the time to add the UI part so the users can start enjoing our app.
+We have build our api server, and now it is the time to add the UI part so the users can start enjoying our app.
 
 First we need to add support for static files to our server.
 
 Please remove the `server/boot/root.js` file.
+
 Edit the `files` property of the `server/middleware.json` file:
 ```json
 "files":
@@ -510,7 +508,7 @@ Edit the `files` property of the `server/middleware.json` file:
 }
 ```
 
-Now copy the sample angular client from thi repo to the client directoy in your project.
+Now copy the sample angular client from the repo to the client directoy in your project.
 
 Restart the server and open http://localhost:3000
 You will see the site but it is not responsive. The reason is that we need to setup the communication between the UI and the API we have set.
@@ -518,9 +516,9 @@ You will see the site but it is not responsive. The reason is that we need to se
 Interactions between the frontend and the backend
 =================================================
 
-Loopback comes with a cli tool that auto generates $resource for all your application REST endpoint, allowing to easily interact with your api from angular web applications.
+Loopback comes with a cli tool that auto generates angular $resource for all your application REST endpoints, allowing to easily interact with your api from angular web applications.
 
-Lets generate the js code by running:
+Lets generate the javascript code by running:
 ```sh
 $ lb-ng server/server.js client/js/services/lb-services.js
 ```
@@ -533,22 +531,21 @@ Example usage for creating a note for a user:
 ```javascript
  User.notes
           .create({id: 'me'}, {
-            username: $rootScope.currentUser.email,
             title: $scope.note.title,
             content: $scope.note.content
           })
 ```
 
-Refresh the site and playaround in it (first you need to signup)
+Refresh the site and play around in it (first you need to signup)
 
 Login using Facebook
 ====================
 
 Users prefer to have a quick singup/login process. We can achieve that by allowing users to signup using Facebook
 
-Loopback comes with full support of the Passport node modules.
+Loopback comes with full support of the Passport middleware.
 
-> You will need to setup a facebook app and obtain the app id and secret. Also enable http://localhost:3000 as a valid url to use the app.
+> First, you will need to setup a facebook app and obtain the app id and secret. Also set the http://localhost:3000 url as a valid url to use the app.
 
 First lets install the required dependencies:
 ```sh
@@ -557,7 +554,7 @@ $ npm install --save passport-facebook
 $ npm install --save cookie-parser
 ```
 
-Now lets add to the `server/server.js` file, after the setting the `variable` the following:
+Now lets add to the `server/server.js` file, after the setting of the `app` the following:
 ```javascript
 require('loopback-component-passport');
 var cookieParser = require('cookie-parser');
@@ -636,7 +633,7 @@ restart the server and try to login with facebook
 Summary
 =======
 
-You are not welcome to extend the application by adding more models and expiremnting with changes in the UI to interact with those models.
+You are welcome to extend the application by adding more models and expiremnting with changes in the UI to interact with those models.
 
 Adding Gmail login is as easy as adding another part to the `providers.json` file.
 
