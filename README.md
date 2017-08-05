@@ -596,4 +596,6 @@ You are not welcome to extend the application by adding more models and expiremn
 
 Adding Gmail login is as easy as adding another part to the `providers.json` file.
 
+### 14. Credits
 
+This tutorial is based on the https://loopback.io/doc/en/lb3/Getting-started-with-LoopBack.html official tutorial by Loopback
