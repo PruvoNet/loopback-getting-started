@@ -12,11 +12,15 @@ This tutrial will cover:
   - Connecting the models to a real DB
   - Angular frotnend that communicates with the backend server
 
+Goal
+====
+
+We will create a simple web application (MyNotes) that will enable users to create and manage personal notes with the abaility to archive them once they are irrelevant.
+
 Table of contents
 =================
 
   * [Set up](#set-up)
-  * [Goal](#goal)
   * [Generate the application](#generate-the-application)
   * [Attach a DB](#attach-a-db)
   * [Auto create DB schema](#auto-create-db-schema)
@@ -46,11 +50,6 @@ $ npm install -g loopback-cli
 $ npm install -g strongloop
 $ npm install -g loopback-sdk-angular-cli
 ```
-
-Goal
-====
-
-We will create a simple web application (MyNotes) that will enable users to create and manage personal notes with the abaility to archive them once they are irrelevant.
 
 Generate the application
 ========================
