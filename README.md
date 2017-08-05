@@ -58,7 +58,7 @@ Notice that we got a valid response from the server stating the user was created
 Lets try to get all the users we have by running the GET method on the /Users endpoint.
 Notice we got a 401 error code - which makes sense, as users data is sensative and and such no once can read it without the proper access - we will disucess ACLs later on.
 
-### 2. Attach DB
+### 3. Attach DB
 
 Loopback comes with a in-memory DB for devloping purpuses which makes it easier to start working right away.
 Connecting a real DB is as easy as a cli command.
@@ -78,3 +78,177 @@ $ lb datasource
 ? database: testMyApp
 ? Install loopback-connector-mssql@^2.5 Yes
 ```
+
+Notice that the `server/datasources.json` file has a new "sql" object that describes the DB conneciton we just set up.
+
+Since MSSQL requires an encrypted connection, we need to declare it in the mathcing object by adding 
+```json
+"options": 
+{
+      "encrypt": true
+}
+```
+
+### 4. Auto create DB schema
+
+Loopback can auto create all the schemas that describes our models. This is very convenient for developing since we don't want to create the schemas ourselves.
+
+To enable this feature, we need to add the following file:
+`server/boot/autoupdate.js`
+```javascript
+'use strict';
+
+module.exports = function (app) {
+  var datasources = require('../datasources.json');
+
+  function autoUpdateAll() {
+    Object.keys(datasources).forEach(function (key) {
+      var DS = app.dataSources[key];
+      if (DS.connected) {
+        DS.autoupdate(function (err) {
+          if (err) throw err;
+          console.log('DS ' + key + ' updated');
+        });
+      } else {
+        DS.once('connected', function () {
+          DS.autoupdate(function (err) {
+            if (err) throw err;
+            console.log('DS ' + key + ' updated');
+          });
+        });
+      }
+    });
+  }
+
+  autoUpdateAll();
+};
+```
+
+> In production you should disable this feature as it changes schemas even if they alredy exists, which can lead to data loss!
+
+Rerun the application and add the user again (it was deleted from last time as it was saved in memory)
+Open your prefrence of DB explorer and notice that a lof of tables were auto created for you and that the user table has 1 entry of the user you just created.
+
+### 5. Create models
+
+As our application holds notes for users, we need to have a representation of a note in the DB - a loopback model:
+ - A note will belong to a single user
+ - A note can be archivable
+ - A note will be composed of a title and text content.
+ - A note will have a creation date
+
+Lets jump right ahead and create the model:
+```sh
+$ lb model
+? Enter the model name: note
+? Select the datasource to attach note to: sql (mssql)
+? Select model's base class PersistedModel
+? Expose note via the REST API? Yes
+? Custom plural form (used to build REST URL):
+? Common model or server only? server
+```
+
+Now lets add its properties:
+```sh
+Let's add some note properties now.
+
+Enter an empty property name when done.
+? Property name: id
+   invoke   loopback:property
+? Property type: string
+? Required? Yes
+? Default value[leave blank for none]:
+
+Let's add another note property.
+Enter an empty property name when done.
+? Property name: username
+   invoke   loopback:property
+? Property type: string
+? Required? Yes
+? Default value[leave blank for none]:
+
+Let's add another note property.
+Enter an empty property name when done.
+? Property name: created
+   invoke   loopback:property
+? Property type: date
+? Required? Yes
+? Default value[leave blank for none]:
+
+Let's add another note property.
+Enter an empty property name when done.
+? Property name: archived
+   invoke   loopback:property
+? Property type: boolean
+? Required? Yes
+? Default value[leave blank for none]: false
+
+Let's add another note property.
+Enter an empty property name when done.
+? Property name: title
+   invoke   loopback:property
+? Property type: string
+? Required? Yes
+? Default value[leave blank for none]:
+
+Let's add another note property.
+Enter an empty property name when done.
+? Property name: content
+   invoke   loopback:property
+? Property type: string
+? Required? Yes
+? Default value[leave blank for none]:
+```
+
+Notice that under `server/models` we have 2 files that represnt the Note model:
+ - `note.js` - here we can customize the behaviour of the model
+ - `note.json` - JSON description of the model
+
+Notice also that the `server/model-config.js` file declares our model and connects it to the DB we created earlier
+
+Lets connect the pre defined models in that file to our DB as well by changing the "dataSource" property to "sql"
+
+### 6. Extned user models
+
+As mentioned before, loopback comes with predefined models for handling users and authentication.
+For purposes outside of the scope of this tutrial, we need to extend them.
+
+```sh
+$ lb model
+? Enter the model name: user
+? Select the datasource to attach user to: sql (mssql)
+? Select model's base class User
+? Expose user via the REST API? Yes
+? Custom plural form (used to build REST URL):
+? Common model or server only? server
+Let's add some user properties now.
+
+Enter an empty property name when done.
+? Property name: email
+   invoke   loopback:property
+? Property type: string
+? Required? Yes
+? Default value[leave blank for none]:
+```
+
+```sh
+$ lb model
+? Enter the model name: accessToken
+? Select the datasource to attach accessToken to: sql (mssql)
+? Select model's base class AccessToken
+? Expose accessToken via the REST API? No
+? Common model or server only? server
+Let's add some accessToken properties now.
+
+Enter an empty property name when done.
+? Property name: id
+   invoke   loopback:property
+? Property type: string
+? Required? Yes
+? Default value[leave blank for none]:
+```
+
+Now lets remove the old model configs from `server/model-config.js` by removing the "User" and "AccessToken" keys
+
+
+
