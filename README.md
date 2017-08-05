@@ -385,7 +385,7 @@ $ lb relation
 ? Relation type: has many
 ? Choose a model to create a relationship with: note
 ? Enter the property name for the relation: notes
-? Optionally enter a custom foreign key:
+? Optionally enter a custom foreign key: username
 ? Require a through model? No
 ```
 
@@ -395,7 +395,7 @@ $ lb relation
 ? Relation type: belongs to
 ? Choose a model to create a relationship with: user
 ? Enter the property name for the relation: user
-? Optionally enter a custom foreign key:
+? Optionally enter a custom foreign key: username
 ```
 
 ```sh
