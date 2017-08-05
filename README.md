@@ -437,4 +437,26 @@ $ lb acl
 
 Check out the models json files and notice the added acls section.
 
+### 10. Add the fornetnd
+
+We have build our api server, and now is the time to add the UI part so the users can start enjoing our app.
+
+First we need to add support for static files to our server.
+
+Please remove the `server/boot/root.js` file.
+Edit the `files` property of the `server/middleware.json` file:
+```json
+"files":
+{
+    "loopback#static": {
+        "params": "$!../client"
+    }
+}
+```
+
+Now copy the sample angular client from thi repo to the client directoy in your project.
+
+### 11. Interactions between the forntend and the backend
+
+
 
