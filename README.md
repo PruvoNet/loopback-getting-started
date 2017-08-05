@@ -77,14 +77,14 @@ $ lb datasource
 ? host: testmyapp.database.windows.net
 ? port: 1433
 ? user: myapp
-? password: *********
+? password: Admin1234
 ? database: testMyApp
 ? Install loopback-connector-mssql@^2.5 Yes
 ```
 
 Notice that the `server/datasources.json` file has a new "db" object that describes the DB conneciton we just set up.
 
-Since MSSQL requires an encrypted connection, we need to declare it in the mathcing object by adding 
+Since MSSQL requires an encrypted connection, we need to declare it in the mathcing object by adding the following to its definition:
 ```json
 "options": 
 {
@@ -94,7 +94,7 @@ Since MSSQL requires an encrypted connection, we need to declare it in the mathc
 
 ### 4. Auto create DB schema
 
-Loopback can auto create all the schemas that describes our models. This is very convenient for developing since we don't want to create the schemas ourselves.
+Loopback can auto create all the schemas that describe our models. This is very convenient for developing since we don't want to create the schemas ourselves.
 
 To enable this feature, we need to add the following file:
 `server/boot/autoupdate.js`
@@ -129,12 +129,12 @@ module.exports = function (app) {
 
 > In production you should disable this feature as it changes schemas even if they alredy exists, which can lead to data loss!
 
-Rerun the application and add the user again (it was deleted from last time as it was saved in memory)
+Rerun the application and create a user again (it was deleted from last time as it was saved in memory)  
 Open your prefrence of DB explorer and notice that a lof of tables were auto created for you and that the user table has 1 entry of the user you just created.
 
 ### 5. Create models
 
-As our application holds notes for users, we need to have a representation of a note in the DB - a loopback model:
+As our application holds notes for users, we need to have a representation of a note in the DB:
  - A note will belong to a single user
  - A note can be archivable
  - A note will be composed of a title and text content.
