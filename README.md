@@ -12,6 +12,8 @@ This tutrial will cover:
   - Connecting the models to a real DB
   - Angular frontend that communicates with the backend server
 
+[presentation](https://github.com/PruvoNet/loopback-getting-started/blob/master/meetup-from%20idea%20to%20production.pdf)
+
 Goal
 ====
 
