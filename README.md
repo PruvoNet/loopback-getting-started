@@ -100,7 +100,7 @@ $ lb datasource
 ? host: testmyapp.database.windows.net
 ? port: 1433
 ? user: myapp
-? password: Admin1234
+? password: **********
 ? database: testMyApp
 ? Install loopback-connector-mssql@^2.5 Yes
 ```
@@ -570,8 +570,8 @@ Add `server/boot/providers.json` file that declares the facebook login method:
     "provider": "facebook",
     "module": "passport-facebook",
     "setAccessToken": true,
-    "clientID": "109015129773445",
-    "clientSecret": "88a9a4273dd717769eb926ab7626fd38",
+    "clientID": "**************",
+    "clientSecret": "****************",
     "callbackURL": "http://localhost:3000/api/auth/facebook/callback",
     "authPath": "/api/auth/facebook",
     "callbackPath": "/api/auth/facebook/callback",
